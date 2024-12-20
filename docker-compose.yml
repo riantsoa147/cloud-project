@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./sql/BASE.sql:/docker-entrypoint-initdb.d/01-BASE.sql
+      - ./sql/Data.sql:/docker-entrypoint-initdb.d/02-Data.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: secure_user
+
+  node-app:
+    build:
+      context: ./node-js-project
+      dockerfile: Dockerfile
+    container_name: node-js-project
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: secure_user
+
+volumes:
+  postgres-data:
