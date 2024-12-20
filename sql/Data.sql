@@ -17,7 +17,9 @@ WHERE id = 'fd5c63a6-3e6c-49d5-8866-358bdf3419ba';
 
 -- Rajo
 INSERT INTO configuration (keys, valeurs) VALUES 
-('pin_expiration_minute', '15');
+('pin_expiration_minute', '15'),
+('attempt_number', '5');
+('attempt_delay', '90');
 
 INSERT INTO users (email, name, firstname, validation_date, password)
 VALUES
